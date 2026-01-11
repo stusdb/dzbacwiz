@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry Solutions Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Blue and black color scheme */
+        body.light-mode {
+            background: linear-gradient(135deg, #f0f4f8 0%, #e6f2ff 50%, #f0f4f8 100%);
+            color: #1a1a1a;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%);
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Blue gradient background for icon */
+        .icon-box {
+            background: linear-gradient(135deg, #0066ff, #0099ff);
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
+        }
+
+        .icon-box svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
+
+        /* Blue gradient text for title */
+        .title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #0066ff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: 2px solid #ccc;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .dark-mode .theme-toggle {
+            border-color: #444;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 1.25rem;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(0, 102, 255, 0.1);
+        }
+
+        .dark-mode .card {
+            background: rgba(20, 30, 60, 0.6);
+            border: 1px solid rgba(0, 102, 255, 0.2);
+        }
+
+        .welcome-screen {
+            text-align: center;
+        }
+
+        /* Blue gradient for welcome icon */
+        .welcome-icon {
+            background: linear-gradient(135deg, #0066ff, #0099ff);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            box-shadow: 0 15px 35px rgba(0, 102, 255, 0.3);
+        }
+
+        .welcome-icon svg {
+            width: 56px;
+            height: 56px;
+            color: white;
+        }
+
+        /* Blue gradient welcome title */
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #0066ff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-description {
+            font-size: 1.125rem;
+            color: #555;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+
+        .dark-mode .welcome-description {
+            color: #aaa;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        /* Blue stat boxes */
+        .stat-box {
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 2px solid;
+            text-align: center;
+        }
+
+        .stat-box.blue {
+            background: #e6f2ff;
+            border-color: #99ccff;
+        }
+
+        .dark-mode .stat-box.blue {
+            background: rgba(0, 102, 255, 0.15);
+            border-color: #0099ff;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #0066ff;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #666;
+        }
+
+        .dark-mode .stat-label {
+            color: #aaa;
+        }
+
+        /* Blue gradient buttons */
+        .btn {
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: linear-gradient(to right, #0066ff, #0099ff);
+            color: white;
+            box-shadow: 0 10px 25px rgba(0, 102, 255, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 102, 255, 0.4);
+            background: linear-gradient(to right, #0052cc, #0077cc);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #0066ff;
+            border: 2px solid #0066ff;
+        }
+
+        .btn-outline:hover {
+            background: #0066ff;
+            color: white;
+        }
+
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #666;
+        }
+
+        .dark-mode .progress-header {
+            color: #aaa;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #ddd;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .dark-mode .progress-bar {
+            background: #333;
+        }
+
+        /* Blue progress bar */
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #0066ff, #0099ff);
+            transition: width 0.3s;
+            border-radius: 9999px;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Blue question number circle */
+        .question-number {
+            background: linear-gradient(135deg, #0066ff, #0099ff);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0, 102, 255, 0.3);
+        }
+
+        .question-text {
+            font-size: 1.375rem;
+            font-weight: 600;
+            line-height: 1.6;
+            color: #1a1a1a;
+        }
+
+        .dark-mode .question-text {
+            color: #e0e0e0;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        /* Blue bordered options */
+        .option {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 2px solid;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f9f9f9;
+            border-color: #ddd;
+        }
+
+        .dark-mode .option {
+            background: rgba(20, 30, 60, 0.4);
+            border-color: #333;
+        }
+
+        .option:hover:not(.answered) {
+            border-color: #0066ff;
+            background: #f0f7ff;
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .option.correct {
+            background: #e6f9f0;
+            border-color: #10b981;
+        }
+
+        .option.incorrect {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #666;
+            flex-shrink: 0;
+        }
+
+        .option.correct .option-letter {
+            background: #10b981;
+            border-color: #10b981;
+            color: white;
+        }
+
+        .option.incorrect .option-letter {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: white;
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        .option.correct .option-text {
+            color: #047857;
+            font-weight: 500;
+        }
+
+        .option.incorrect .option-text {
+            color: #b91c1c;
+        }
+
+        .explanation {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border-left: 4px solid #0066ff;
+            background: #e6f2ff;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .dark-mode .explanation {
+            background: rgba(0, 102, 255, 0.15);
+            border-left-color: #0099ff;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .explanation-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: #0066ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .explanation-text {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .dark-mode .explanation-text {
+            color: #ccc;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .score-card {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        .score-item {
+            flex: 1;
+        }
+
+        .score-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #0066ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-label {
+            font-size: 0.875rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .dark-mode .score-label {
+            color: #aaa;
+        }
+
+        .divider {
+            width: 1px;
+            background: #ddd;
+            height: 60px;
+        }
+
+        .dark-mode .divider {
+            background: #333;
+        }
+
+        .results-screen {
+            text-align: center;
+        }
+
+        /* Blue gradient results title */
+        .results-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #0066ff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .results-message {
+            font-size: 1.125rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .dark-mode .results-message {
+            color: #aaa;
+        }
+
+        .results-percentage {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #0066ff;
+            margin: 2rem 0;
+        }
+
+        .performance-message {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 2rem;
+            min-height: 40px;
+        }
+
+        .dark-mode .performance-message {
+            color: #aaa;
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 11l3 3L22 4"></path>
+                        <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h1 class="title">Chemistry Quiz</h1>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <span id="theme-icon">🌙</span>
+            </button>
+        </div>
+
+        <div id="welcome-screen" class="card welcome-screen">
+            <div class="welcome-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 6v6l4 2"></path>
+                </svg>
+            </div>
+            <h2 class="welcome-title">Chemistry Solutions Quiz</h2>
+            <p class="welcome-description">Test your knowledge on solutions, molarity, concentrations, and chemistry concepts. 20 questions to master!</p>
+            
+            <div class="stats-grid">
+                <div class="stat-box blue">
+                    <div class="stat-number">20</div>
+                    <div class="stat-label">Questions</div>
+                </div>
+                <div class="stat-box blue">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Possible Score</div>
+                </div>
+                <div class="stat-box blue">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Attempts</div>
+                </div>
+            </div>
+
+            <button class="btn" onclick="startQuiz()">Start Quiz</button>
+        </div>
+
+        <div id="quiz-screen" class="card" style="display: none;">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span id="progress-text">Question 1 of 20</span>
+                    <span id="score-text">Score: 0/0</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 5%"></div>
+                </div>
+            </div>
+
+            <div class="question-header">
+                <div class="question-number" id="question-num">1</div>
+                <div class="question-text" id="question-text"></div>
+            </div>
+
+            <div class="options" id="options"></div>
+
+            <div id="explanation" class="explanation" style="display: none;">
+                <div class="explanation-header">
+                    <span>💡 Explanation:</span>
+                </div>
+                <div class="explanation-text" id="explanation-text"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-outline" onclick="previousQuestion()" id="prev-btn">Previous</button>
+                <button class="btn" onclick="nextQuestion()" id="next-btn">Next</button>
+            </div>
+        </div>
+
+        <div id="results-screen" class="card results-screen" style="display: none;">
+            <h2 class="results-title">Quiz Complete!</h2>
+            <div class="score-card">
+                <div class="score-item">
+                    <div class="score-number" id="final-score">0</div>
+                    <div class="score-label">Correct</div>
+                </div>
+                <div class="divider"></div>
+                <div class="score-item">
+                    <div class="score-number" id="final-incorrect">0</div>
+                    <div class="score-label">Incorrect</div>
+                </div>
+            </div>
+            <div class="results-percentage" id="final-percentage">0%</div>
+            <div class="performance-message" id="performance-message"></div>
+            <button class="btn" onclick="restartQuiz()">Retake Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "Any solution is composed of:",
+                options: ["Solute only", "Solvent only", "Solute + Solvent", "Ions + Molecules"],
+                correct: 2,
+                explanation: "A solution is a homogeneous mixture consisting of both a solute (dissolved substance) and a solvent (dissolving substance)."
+            },
+            {
+                question: "The titre of a solution is:",
+                options: ["Number of moles per liter", "Mass of solute in a given volume of solution", "Volume of solute", "Temperature of solution"],
+                correct: 1,
+                explanation: "The titre represents the mass of solute dissolved in a specific volume of solution."
+            },
+            {
+                question: "The formula of the titre is:",
+                options: ["T = V / m", "T = m / V", "T = n / V", "T = V × m"],
+                correct: 1,
+                explanation: "The titre formula is T = m / V, where m is mass of solute and V is volume of solution."
+            },
+            {
+                question: "The unit of the titre (T) is:",
+                options: ["mol/L", "g/mL", "g/L", "mol/mL"],
+                correct: 1,
+                explanation: "The titre is expressed in g/mL or g/L (mass per unit volume)."
+            },
+            {
+                question: "Molarity is defined as:",
+                options: ["Mass per volume", "n / V", "Number of moles per gram", "Density of solution"],
+                correct: 1,
+                explanation: "Molarity (M) = n / V, where n is moles of solute and V is volume in liters."
+            },
+            {
+                question: "The unit of molarity is:",
+                options: ["g/mL", "mol/L", "g/L", "mol/mL"],
+                correct: 1,
+                explanation: "Molarity is expressed in mol/L or M (moles per liter)."
+            },
+            {
+                question: "A solution with a concentration of 20% means:",
+                options: ["20 mL of solute in 100 mL of solvent", "20 g of solute in 100 g of solution", "20 g of solute in 100 mL of water", "20 moles per liter"],
+                correct: 1,
+                explanation: "A 20% concentration means 20 g of solute per 100 g of total solution."
+            },
+            {
+                question: "The mass concentration (Cp) represents:",
+                options: ["Number of moles per liter", "Mass of solute per liter of solution", "Mass of solvent per liter", "Total mass of solution"],
+                correct: 1,
+                explanation: "Mass concentration is the mass of solute dissolved in one liter of solution."
+            },
+            {
+                question: "The gram-equivalent of HCl is:",
+                options: ["1 mole", "2 moles", "0.5 moles", "3 moles"],
+                correct: 0,
+                explanation: "HCl has one replaceable hydrogen, so 1 mole of HCl = 1 gram-equivalent."
+            },
+            {
+                question: "The correct dilution relationship is:",
+                options: ["N₁ + V₁ = N₂ + V₂", "N₁V₁ = N₂V₂", "N₁/V₁ = N₂/V₂", "N₁ × N₂ = V₁ × V₂"],
+                correct: 1,
+                explanation: "The dilution formula N₁V₁ = N₂V₂ relates normality and volume before and after dilution."
+            },
+            {
+                question: "Alkali metals have:",
+                options: ["Filled d orbitals", "1 valence electron", "Full outer shell", "2 valence electrons"],
+                correct: 1,
+                explanation: "Alkali metals (Group 1) have 1 valence electron in their outermost shell."
+            },
+            {
+                question: "Halogens belong to the:",
+                options: ["Last column of periodic table", "Second-to-last column", "First column", "Middle column"],
+                correct: 1,
+                explanation: "Halogens are in Group 17, the second-to-last column of the periodic table."
+            },
+            {
+                question: "The least reactive family is:",
+                options: ["Alkali metals", "Halogens", "Noble gases", "Alkaline earth metals"],
+                correct: 2,
+                explanation: "Noble gases have a complete valence shell and are extremely unreactive."
+            },
+            {
+                question: "The maximum number of electrons in shell n is:",
+                options: ["n²", "2n²", "2n", "n × 2"],
+                correct: 1,
+                explanation: "The maximum number of electrons in shell n is 2n², derived from quantum mechanics."
+            },
+            {
+                question: "The maximum capacity of the d subshell is:",
+                options: ["5 electrons", "10 electrons", "14 electrons", "6 electrons"],
+                correct: 1,
+                explanation: "The d subshell can hold maximum 10 electrons (5 orbitals × 2 electrons each)."
+            },
+            {
+                question: "The order of orbital filling follows:",
+                options: ["Random order", "Klechkowski diagram (Aufbau principle)", "Atomic number order", "Alphabetical order"],
+                correct: 1,
+                explanation: "The Aufbau principle (Klechkowski diagram) determines the order of orbital filling."
+            },
+            {
+                question: "The number of quantum numbers is:",
+                options: ["2", "3", "4", "5"],
+                correct: 2,
+                explanation: "There are 4 quantum numbers: principal (n), angular (l), magnetic (ml), and spin (ms)."
+            },
+            {
+                question: "When an anion is formed:",
+                options: ["The atom loses electrons", "The atom gains electrons", "No change in electrons", "The atom gains protons"],
+                correct: 1,
+                explanation: "An anion is formed when an atom gains one or more electrons."
+            },
+            {
+                question: "An element that shows an exception in electronic configuration is:",
+                options: ["Ca", "Cu", "Cr", "Fe"],
+                correct: 2,
+                explanation: "Chromium (Cr) has an exception: [Ar]3d⁵4s¹ instead of [Ar]3d⁴4s²."
+            },
+            {
+                question: "The empirical formula differs from molecular formula when:",
+                options: ["They are always the same", "The molecular formula is a multiple of the empirical formula", "There are no molecules", "The compound is ionic"],
+                correct: 1,
+                explanation: "The molecular formula is always a whole number multiple of the empirical formula."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = new Array(quizData.length).fill(null);
+        let answered = new Array(quizData.length).fill(false);
+
+        function startQuiz() {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('quiz-screen').style.display = 'block';
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const question = quizData[currentQuestion];
+            document.getElementById('question-num').textContent = currentQuestion + 1;
+            document.getElementById('question-text').textContent = question.question;
+            document.getElementById('progress-text').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+            document.getElementById('progress-fill').style.width = ((currentQuestion + 1) / quizData.length * 100) + '%';
+
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                
+                if (answered[currentQuestion]) {
+                    if (index === question.correct) {
+                        optionDiv.classList.add('correct');
+                    } else if (index === answers[currentQuestion] && answers[currentQuestion] !== question.correct) {
+                        optionDiv.classList.add('incorrect');
+                    }
+                    optionDiv.classList.add('answered');
+                }
+
+                optionDiv.innerHTML = `
+                    <div class="option-letter">${String.fromCharCode(65 + index)}</div>
+                    <div class="option-text">${option}</div>
+                `;
+
+                optionDiv.onclick = () => selectAnswer(index);
+                optionsDiv.appendChild(optionDiv);
+            });
+
+            updateExplanation();
+            updateButtons();
+            updateScore();
+        }
+
+        function selectAnswer(index) {
+            if (!answered[currentQuestion]) {
+                answers[currentQuestion] = index;
+                answered[currentQuestion] = true;
+                loadQuestion();
+            }
+        }
+
+        function updateExplanation() {
+            const explanationDiv = document.getElementById('explanation');
+            if (answered[currentQuestion]) {
+                document.getElementById('explanation-text').textContent = quizData[currentQuestion].explanation;
+                explanationDiv.style.display = 'block';
+            } else {
+                explanationDiv.style.display = 'none';
+            }
+        }
+
+        function updateButtons() {
+            document.getElementById('prev-btn').disabled = currentQuestion === 0;
+            document.getElementById('next-btn').textContent = currentQuestion === quizData.length - 1 ? 'Finish' : 'Next';
+        }
+
+        function updateScore() {
+            const correct = answers.filter((ans, i) => ans === quizData[i].correct).length;
+            const answered_count = answered.filter(a => a).length;
+            document.getElementById('score-text').textContent = `Score: ${correct}/${answered_count}`;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        function showResults() {
+            const correct = answers.filter((ans, i) => ans === quizData[i].correct).length;
+            const percentage = Math.round((correct / quizData.length) * 100);
+            
+            document.getElementById('quiz-screen').style.display = 'none';
+            document.getElementById('results-screen').style.display = 'block';
+            document.getElementById('final-score').textContent = correct;
+            document.getElementById('final-incorrect').textContent = quizData.length - correct;
+            document.getElementById('final-percentage').textContent = percentage + '%';
+            
+            let message = '';
+            if (percentage === 100) message = '🎉 Perfect Score! You are a chemistry master!';
+            else if (percentage >= 90) message = '🌟 Excellent! Outstanding performance!';
+            else if (percentage >= 80) message = '✅ Great! You have solid knowledge!';
+            else if (percentage >= 70) message = '👍 Good! Keep studying to improve!';
+            else if (percentage >= 50) message = '📚 Fair. Review the material and try again!';
+            else message = '💪 Keep practicing! You\'ll improve with more study!';
+            
+            document.getElementById('performance-message').textContent = message;
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            answers = new Array(quizData.length).fill(null);
+            answered = new Array(quizData.length).fill(false);
+            document.getElementById('welcome-screen').style.display = 'block';
+            document.getElementById('results-screen').style.display = 'none';
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+            document.getElementById('theme-icon').textContent = document.body.classList.contains('dark-mode') ? '🌙' : '☀️';
+        }
+    </script>
+    <footer>
+        Made by <a href="https://t.me/Abdo_HEN" target="_blank">@Abdo_HEN</a>
+    </footer>
+
+</body>
+</html>
