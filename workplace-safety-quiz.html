@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workplace Safety Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary-color: #3B82F6;
+            --primary-light: #60A5FA;
+            --primary-dark: #2563EB;
+            --accent-color: #06B6D4;
+            --background-color: #0a0a0a;
+            --surface-color: #111111;
+            --surface-color-light: #1a1a1a;
+            --text-color: #e0e0e0;
+            --text-color-secondary: #9ca3af;
+            --correct-color: #22C55E;
+            --incorrect-color: #EF4444;
+            --border-color: #222;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --card-radius: 16px;
+            --button-radius: 12px;
+        }
+
+        .light-mode {
+            --background-color: #f1f5f9;
+            --surface-color: #ffffff;
+            --surface-color-light: #f8fafc;
+            --text-color: #1e293b;
+            --text-color-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            transition: var(--transition);
+            line-height: 1.6;
+            cursor: default;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 25px 25px, rgba(59, 130, 246, 0.08) 2%, transparent 0%), 
+                radial-gradient(circle at 75px 75px, rgba(6, 182, 212, 0.05) 2%, transparent 0%);
+            background-size: 100px 100px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quiz-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding: 1.5rem 2rem;
+            background: var(--surface-color);
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .quiz-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .quiz-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .quiz-title-icon {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            flex-shrink: 0;
+            aspect-ratio: 1/1;
+        }
+
+        .question-container {
+            background: var(--surface-color);
+            border-radius: var(--card-radius);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out;
+            border: 1px solid var(--border-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+        }
+
+        .question-number {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .question-number-badge {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            flex-shrink: 0;
+            aspect-ratio: 1/1;
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+            line-height: 1.5;
+        }
+
+        .multi-select-hint {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(6, 182, 212, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .option {
+            padding: 1.25rem;
+            border-radius: var(--button-radius);
+            background: var(--surface-color-light);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+
+        .option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2);
+            border-color: var(--primary-light);
+        }
+
+        .option.selected {
+            border-color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.15);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+        }
+
+        .option.correct {
+            border-color: var(--correct-color);
+            background: rgba(34, 197, 94, 0.15);
+        }
+
+        .option.incorrect {
+            border-color: var(--incorrect-color);
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        .option-letter {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--primary-color);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(59, 130, 246, 0.15);
+            flex-shrink: 0;
+            font-size: 1rem;
+            aspect-ratio: 1/1;
+            transition: var(--transition);
+        }
+
+        .option.correct .option-letter {
+            background: var(--correct-color);
+            color: white;
+        }
+
+        .option.incorrect .option-letter {
+            background: var(--incorrect-color);
+            color: white;
+        }
+
+        .option.selected .option-letter {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .option-text {
+            flex: 1;
+        }
+
+        .feedback {
+            margin-top: 1.5rem;
+            padding: 1rem 1.25rem;
+            border-radius: var(--button-radius);
+            font-weight: 500;
+            display: none;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback.correct {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--correct-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-left: 4px solid var(--correct-color);
+        }
+
+        .feedback.incorrect {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--incorrect-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-left: 4px solid var(--incorrect-color);
+        }
+
+        .feedback.partial {
+            background: rgba(234, 179, 8, 0.15);
+            color: #EAB308;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-left: 4px solid #EAB308;
+        }
+
+        .feedback-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1/1;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .nav-button {
+            padding: 0.9rem 1.75rem;
+            border-radius: var(--button-radius);
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-button.prev {
+            background: var(--surface-color-light);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-button.next {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .nav-button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-button.prev:hover:not(:disabled) {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border-color: var(--primary-light);
+        }
+
+        .progress-container {
+            margin-top: 2rem;
+            padding: 1.5rem 2rem;
+            background: var(--surface-color);
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: var(--surface-color-light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--text-color-secondary);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .progress-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .progress-stat-label {
+            font-size: 0.85rem;
+            color: var(--text-color-secondary);
+        }
+
+        #themeToggle {
+            background: var(--surface-color-light);
+            border: 1px solid var(--border-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-color);
+            aspect-ratio: 1/1;
+        }
+
+        #themeToggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+            border-color: var(--primary-light);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-color-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        footer a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Start screen styles */
+        .start-screen {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: var(--surface-color);
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .start-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .start-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .start-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
+        }
+
+        .start-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-color-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: var(--button-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.5);
+        }
+
+        .quiz-info {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            border-radius: var(--button-radius);
+            background: var(--surface-color-light);
+            text-align: left;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-card {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .info-card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            aspect-ratio: 1/1;
+        }
+
+        .info-card-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .info-card-content {
+            color: var(--text-color-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Results screen styles */
+        .results-container {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: var(--surface-color);
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.6s ease-out;
+            border: 1px solid var(--border-color);
+        }
+
+        .results-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .results-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .results-subtitle {
+            color: var(--text-color-secondary);
+            margin-bottom: 2.5rem;
+        }
+
+        .score-display {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 2rem;
+        }
+
+        .score-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--surface-color-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.2);
+            aspect-ratio: 1/1;
+            border: 1px solid var(--border-color);
+        }
+
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border-radius: 50%;
+            background: var(--surface-color);
+            z-index: 1;
+        }
+
+        .score-value {
+            position: relative;
+            z-index: 2;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .score-text {
+            font-size: 1.2rem;
+            margin: 1rem 0 2rem;
+            color: var(--text-color);
+        }
+
+        .score-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .score-progress svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .score-progress circle {
+            fill: none;
+            stroke-width: 10;
+            stroke-linecap: round;
+            transform-origin: center;
+            transform: scale(0.94);
+        }
+
+        .results-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .result-stat {
+            background: var(--surface-color-light);
+            padding: 1.25rem;
+            border-radius: var(--button-radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .result-stat-value {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .result-stat-label {
+            font-size: 0.9rem;
+            color: var(--text-color-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .restart-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: var(--button-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .restart-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                margin: 1rem auto;
+            }
+
+            .quiz-header, .question-container, .progress-container {
+                padding: 1.5rem;
+            }
+
+            .question-text {
+                font-size: 1.1rem;
+            }
+
+            .option {
+                padding: 1rem;
+            }
+
+            .results-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <div class="container">
+        <div class="quiz-header">
+            <div class="quiz-title">
+                <div class="quiz-title-icon">
+                    <i data-lucide="shield-check"></i>
+                </div>
+                <span>Workplace Safety</span>
+            </div>
+            <button id="themeToggle" aria-label="Toggle theme">
+                <i data-lucide="sun"></i>
+            </button>
+        </div>
+
+        <div id="quizContent">
+            <!-- Content will be loaded here -->
+        </div>
+
+        <div id="navigation" class="navigation" style="display: none;">
+            <button class="nav-button prev" id="prevButton" disabled>
+                <i data-lucide="chevron-left"></i>
+                Previous
+            </button>
+            <button class="nav-button next" id="nextButton">
+                Next
+                <i data-lucide="chevron-right"></i>
+            </button>
+        </div>
+
+        <div id="progressContainer" class="progress-container" style="display: none;">
+            <div class="progress-stats">
+                <div class="progress-stat">
+                    <div class="progress-stat-value" id="currentQuestionStat">0</div>
+                    <div class="progress-stat-label">Current</div>
+                </div>
+                <div class="progress-stat">
+                    <div class="progress-stat-value" id="correctAnswersStat">0</div>
+                    <div class="progress-stat-label">Correct</div>
+                </div>
+                <div class="progress-stat">
+                    <div class="progress-stat-value" id="totalQuestionsStat">0</div>
+                    <div class="progress-stat-label">Total</div>
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="progress-text">
+                <span id="progressText">Question 1 of 20</span>
+                <span id="progressPercentage">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Workplace Safety Quiz
+    </footer>
+
+    <script>
+        // Quiz data - Workplace Safety Questions
+        const quizData = {
+            questions: [
+                // Unit 1: Basic Concepts
+                {
+                    question: "What is the main difference between Hazard and Risk?",
+                    options: [
+                        "Hazard is the source, Risk is the probability of harm",
+                        "Risk is the source, Hazard is the outcome",
+                        "There is no difference"
+                    ],
+                    correctAnswers: [0],
+                    multiSelect: false,
+                    unit: 1
+                },
+                {
+                    question: "Choose the two concepts that are part of the risk equation:",
+                    options: [
+                        "Hazard and Damage",
+                        "Hazard and Exposure",
+                        "Exposure and Damage"
+                    ],
+                    correctAnswers: [1],
+                    multiSelect: false,
+                    unit: 1
+                },
+                {
+                    question: "Which are characteristics of occupational disease? (Choose two)",
+                    options: [
+                        "Occurs suddenly",
+                        "Develops gradually over time",
+                        "Results from repeated exposure to occupational hazards"
+                    ],
+                    correctAnswers: [1, 2],
+                    multiSelect: true,
+                    unit: 1
+                },
+                {
+                    question: "What are the main responsibilities of an employer towards safety?",
+                    options: [
+                        "Risk assessment and implementing preventive measures",
+                        "Taking full responsibility for all accidents",
+                        "Providing medical treatment only"
+                    ],
+                    correctAnswers: [0],
+                    multiSelect: false,
+                    unit: 1
+                },
+                {
+                    question: "What is a Near Miss?",
+                    options: [
+                        "An accident causing minor injury",
+                        "A serious event that could have caused an accident but did not",
+                        "An accident during commuting"
+                    ],
+                    correctAnswers: [1],
+                    multiSelect: false,
+                    unit: 1
+                },
+                {
+                    question: "Types of occupational accidents by severity (choose two):",
+                    options: [
+                        "Accidents without work stoppage",
+                        "Accidents with work stoppage",
+                        "Accidents during leave"
+                    ],
+                    correctAnswers: [0, 1],
+                    multiSelect: true,
+                    unit: 1
+                },
+                {
+                    question: "What is the role of the Safety and Health Committee?",
+                    options: [
+                        "Monitor workers only",
+                        "Participate in risk assessment and improving work conditions",
+                        "Apply penalties to violators"
+                    ],
+                    correctAnswers: [1],
+                    multiSelect: false,
+                    unit: 1
+                },
+                {
+                    question: "When does Exposure to a hazard occur?",
+                    options: [
+                        "When the hazard exists",
+                        "When a person comes into contact with the hazard",
+                        "When damage has already occurred"
+                    ],
+                    correctAnswers: [1],
+                    multiSelect: false,
+                    unit: 1
+                },
+                {
+                    question: "What are the responsibilities of a worker towards safety? (Choose two)",
+                    options: [
+                        "Follow safety instructions",
+                        "Report hazards and accidents",
+                        "Provide protective equipment for everyone"
+                    ],
+                    correctAnswers: [0, 1],
+                    multiSelect: true,
+                    unit: 1
+                },
+                {
+                    question: "What is the role of the National Institute for Occupational Risk Prevention?",
+                    options: [
+                        "Provide technical support and training",
+                        "Compensate workers for injuries",
+                        "Apply legal sanctions"
+                    ],
+                    correctAnswers: [0],
+                    multiSelect: false,
+                    unit: 1
+                },
+                // Unit 2: Regulations and Standards
+                {
+                    question: "Which of the following are main objectives of occupational safety regulations? (Choose two)",
+                    options: [
+                        "Protect employees from workplace hazards",
+                        "Increase company profits only",
+                        "Reduce accidents and occupational diseases",
+                        "Eliminate legal responsibilities"
+                    ],
+                    correctAnswers: [0, 2],
+                    multiSelect: true,
+                    unit: 2
+                },
+                {
+                    question: "Which agencies are responsible for enforcing workplace safety standards? (Choose two)",
+                    options: [
+                        "OSHA (Occupational Safety and Health Administration)",
+                        "Local fire department",
+                        "ISO (International Organization for Standardization)",
+                        "HR department"
+                    ],
+                    correctAnswers: [0, 2],
+                    multiSelect: true,
+                    unit: 2
+                },
+                {
+                    question: "Key elements of a safety management system (choose three):",
+                    options: [
+                        "Hazard identification",
+                        "Risk assessment",
+                        "Emergency response plan",
+                        "Product marketing strategy"
+                    ],
+                    correctAnswers: [0, 1, 2],
+                    multiSelect: true,
+                    unit: 2
+                },
+                {
+                    question: "Which regulations relate to chemical safety in the workplace? (Choose two)",
+                    options: [
+                        "OSHA Hazard Communication Standard (HCS)",
+                        "ISO 9001 Quality Management Standard",
+                        "Globally Harmonized System (GHS)",
+                        "Electrical wiring codes"
+                    ],
+                    correctAnswers: [0, 2],
+                    multiSelect: true,
+                    unit: 2
+                },
+                {
+                    question: "Types of safety inspections (choose two):",
+                    options: [
+                        "Routine inspection",
+                        "Surprise inspection",
+                        "Financial audit",
+                        "Marketing survey"
+                    ],
+                    correctAnswers: [0, 1],
+                    multiSelect: true,
+                    unit: 2
+                },
+                {
+                    question: "What should be included in a written safety policy? (Choose three)",
+                    options: [
+                        "Roles and responsibilities",
+                        "Safety rules and procedures",
+                        "Hazard reporting methods",
+                        "Employee personal preferences"
+                    ],
+                    correctAnswers: [0, 1, 2],
+                    multiSelect: true,
+                    unit: 2
+                },
+                {
+                    question: "Standards related to fire safety in the workplace (choose two):",
+                    options: [
+                        "NFPA (National Fire Protection Association) codes",
+                        "ISO 14001 Environmental Management",
+                        "Local fire regulations",
+                        "ISO 45001 Occupational Health and Safety"
+                    ],
+                    correctAnswers: [0, 2],
+                    multiSelect: true,
+                    unit: 2
+                },
+                {
+                    question: "Which are considered administrative controls for safety? (Choose two)",
+                    options: [
+                        "Job rotation",
+                        "Training and supervision",
+                        "Machine guards",
+                        "Ventilation systems"
+                    ],
+                    correctAnswers: [0, 1],
+                    multiSelect: true,
+                    unit: 2
+                },
+                {
+                    question: "Which documents are required to comply with safety regulations? (Choose two)",
+                    options: [
+                        "Safety data sheets (SDS)",
+                        "Payroll reports",
+                        "Risk assessment reports",
+                        "Marketing brochures"
+                    ],
+                    correctAnswers: [0, 2],
+                    multiSelect: true,
+                    unit: 2
+                },
+                {
+                    question: "Benefits of following workplace safety standards (choose three):",
+                    options: [
+                        "Reduced workplace accidents",
+                        "Higher employee morale",
+                        "Increased compliance with legal requirements",
+                        "Guarantee of no accidents ever"
+                    ],
+                    correctAnswers: [0, 1, 2],
+                    multiSelect: true,
+                    unit: 2
+                }
+            ]
+        };
+
+        // Quiz state
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = [];
+        let quizStarted = false;
+        let questionAttempted = [];
+
+        // DOM elements
+        const quizContent = document.getElementById('quizContent');
+        const navigation = document.getElementById('navigation');
+        const progressContainer = document.getElementById('progressContainer');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        const progressText = document.getElementById('progressText');
+        const progressBar = document.getElementById('progressBar');
+        const progressPercentage = document.getElementById('progressPercentage');
+        const themeToggle = document.getElementById('themeToggle');
+        const currentQuestionStat = document.getElementById('currentQuestionStat');
+        const correctAnswersStat = document.getElementById('correctAnswersStat');
+        const totalQuestionsStat = document.getElementById('totalQuestionsStat');
+
+        // Show start screen
+        function showStartScreen() {
+            quizStarted = false;
+            navigation.style.display = 'none';
+            progressContainer.style.display = 'none';
+            
+            quizContent.innerHTML = `
+                <div class="start-screen">
+                    <h2 class="start-title">Workplace Safety Quiz</h2>
+                    <p class="start-subtitle">Test your knowledge of workplace safety concepts, regulations, and best practices with this comprehensive assessment.</p>
+                    
+                    <button class="start-button" id="startButton">
+                        <i data-lucide="play"></i>
+                        Start Quiz
+                    </button>
+                    
+                    <div class="quiz-info">
+                        <div class="info-card">
+                            <div class="info-card-icon">
+                                <i data-lucide="help-circle"></i>
+                            </div>
+                            <div class="info-card-title">${quizData.questions.length} Questions</div>
+                            <div class="info-card-content">Comprehensive assessment covering workplace safety fundamentals.</div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-card-icon">
+                                <i data-lucide="book-open"></i>
+                            </div>
+                            <div class="info-card-title">2 Units</div>
+                            <div class="info-card-content">Basic Concepts & Regulations and Standards.</div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-card-icon">
+                                <i data-lucide="check-circle"></i>
+                            </div>
+                            <div class="info-card-title">Multi-Select</div>
+                            <div class="info-card-content">Some questions require selecting multiple correct answers.</div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-card-icon">
+                                <i data-lucide="award"></i>
+                            </div>
+                            <div class="info-card-title">Track Progress</div>
+                            <div class="info-card-content">Monitor your progress and see your score at the end.</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('startButton').addEventListener('click', startQuiz);
+            lucide.createIcons();
+        }
+
+        // Start quiz
+        function startQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = Array(quizData.questions.length).fill(null).map(() => []);
+            questionAttempted = Array(quizData.questions.length).fill(false);
+            quizStarted = true;
+            
+            navigation.style.display = 'flex';
+            progressContainer.style.display = 'flex';
+            
+            totalQuestionsStat.textContent = quizData.questions.length;
+            
+            loadQuestion(0);
+        }
+
+        // Load question
+        function loadQuestion(index) {
+            const question = quizData.questions[index];
+            
+            let optionsHTML = question.options.map((option, i) => {
+                const letter = String.fromCharCode(97 + i);
+                return `
+                    <div class="option" data-index="${i}">
+                        <span class="option-letter">${letter}</span>
+                        <span class="option-text">${option}</span>
+                    </div>
+                `;
+            }).join('');
+
+            const multiSelectHint = question.multiSelect ? `
+                <div class="multi-select-hint">
+                    <i data-lucide="info"></i>
+                    Select ${question.correctAnswers.length} answers
+                </div>
+            ` : '';
+
+            quizContent.innerHTML = `
+                <div class="question-container">
+                    <div class="question-number">
+                        <div class="question-number-badge">${index + 1}</div>
+                        <span>Question ${index + 1} of ${quizData.questions.length} - Unit ${question.unit}</span>
+                    </div>
+                    <div class="question-text">${question.question}</div>
+                    ${multiSelectHint}
+                    <div class="options-container">${optionsHTML}</div>
+                    <div class="feedback" id="feedback"></div>
+                </div>
+            `;
+
+            if (!questionAttempted[index]) {
+                document.querySelectorAll('.option').forEach(option => {
+                    option.addEventListener('click', () => {
+                        selectOption(parseInt(option.dataset.index));
+                    });
+                });
+            } else {
+                showPreviousAnswer(index, question);
+            }
+
+            prevButton.disabled = index === 0;
+            nextButton.textContent = index === quizData.questions.length - 1 ? "Show Results" : "Next";
+            if (index === quizData.questions.length - 1) {
+                nextButton.innerHTML = `Show Results <i data-lucide="award"></i>`;
+            } else {
+                nextButton.innerHTML = `Next <i data-lucide="chevron-right"></i>`;
+            }
+            
+            progressText.textContent = `Question ${index + 1} of ${quizData.questions.length}`;
+            const progress = ((index + 1) / quizData.questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressPercentage.textContent = `${Math.round(progress)}%`;
+            
+            currentQuestionStat.textContent = index + 1;
+            correctAnswersStat.textContent = score;
+            
+            lucide.createIcons();
+        }
+
+        function showPreviousAnswer(index, question) {
+            const userSelected = userAnswers[index];
+            const correctAnswers = question.correctAnswers;
+
+            userSelected.forEach(selectedIdx => {
+                const option = document.querySelector(`.option[data-index="${selectedIdx}"]`);
+                if (correctAnswers.includes(selectedIdx)) {
+                    option.classList.add('correct');
+                } else {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            correctAnswers.forEach(correctIdx => {
+                const option = document.querySelector(`.option[data-index="${correctIdx}"]`);
+                if (!option.classList.contains('correct')) {
+                    option.classList.add('correct');
+                }
+            });
+
+            const allCorrect = correctAnswers.every(idx => userSelected.includes(idx)) && 
+                             userSelected.every(idx => correctAnswers.includes(idx));
+            const someCorrect = userSelected.some(idx => correctAnswers.includes(idx));
+
+            const feedback = document.getElementById('feedback');
+            if (allCorrect) {
+                feedback.innerHTML = `<div class="feedback-icon"><i data-lucide="check"></i></div> Correct!`;
+                feedback.className = 'feedback correct';
+            } else if (someCorrect) {
+                feedback.innerHTML = `<div class="feedback-icon"><i data-lucide="minus"></i></div> Partially correct!`;
+                feedback.className = 'feedback partial';
+            } else {
+                feedback.innerHTML = `<div class="feedback-icon"><i data-lucide="x"></i></div> Incorrect!`;
+                feedback.className = 'feedback incorrect';
+            }
+
+            lucide.createIcons();
+        }
+
+        // Select option
+        function selectOption(index) {
+            const question = quizData.questions[currentQuestion];
+            
+            if (question.multiSelect) {
+                const optionEl = document.querySelector(`.option[data-index="${index}"]`);
+                
+                if (userAnswers[currentQuestion].includes(index)) {
+                    userAnswers[currentQuestion] = userAnswers[currentQuestion].filter(i => i !== index);
+                    optionEl.classList.remove('selected');
+                } else {
+                    userAnswers[currentQuestion].push(index);
+                    optionEl.classList.add('selected');
+                }
+
+                if (userAnswers[currentQuestion].length === question.correctAnswers.length) {
+                    submitAnswer();
+                }
+            } else {
+                userAnswers[currentQuestion] = [index];
+                submitAnswer();
+            }
+        }
+
+        function submitAnswer() {
+            const question = quizData.questions[currentQuestion];
+            const userSelected = userAnswers[currentQuestion];
+            const correctAnswers = question.correctAnswers;
+
+            questionAttempted[currentQuestion] = true;
+
+            const allCorrect = correctAnswers.every(idx => userSelected.includes(idx)) && 
+                             userSelected.every(idx => correctAnswers.includes(idx));
+            
+            if (allCorrect) {
+                score++;
+            }
+
+            userSelected.forEach(selectedIdx => {
+                const option = document.querySelector(`.option[data-index="${selectedIdx}"]`);
+                if (correctAnswers.includes(selectedIdx)) {
+                    option.classList.add('correct');
+                } else {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            correctAnswers.forEach(correctIdx => {
+                const option = document.querySelector(`.option[data-index="${correctIdx}"]`);
+                if (!option.classList.contains('correct')) {
+                    option.classList.add('correct');
+                }
+            });
+
+            const someCorrect = userSelected.some(idx => correctAnswers.includes(idx));
+
+            const feedback = document.getElementById('feedback');
+            if (allCorrect) {
+                feedback.innerHTML = `<div class="feedback-icon"><i data-lucide="check"></i></div> Correct!`;
+                feedback.className = 'feedback correct';
+            } else if (someCorrect) {
+                feedback.innerHTML = `<div class="feedback-icon"><i data-lucide="minus"></i></div> Partially correct!`;
+                feedback.className = 'feedback partial';
+            } else {
+                feedback.innerHTML = `<div class="feedback-icon"><i data-lucide="x"></i></div> Incorrect!`;
+                feedback.className = 'feedback incorrect';
+            }
+
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+
+            correctAnswersStat.textContent = score;
+            lucide.createIcons();
+        }
+
+        // Show results
+        function showResults() {
+            navigation.style.display = 'none';
+            progressContainer.style.display = 'none';
+            
+            const percentage = Math.round((score / quizData.questions.length) * 100);
+            const circumference = 2 * Math.PI * 80;
+            const offset = circumference - (percentage / 100) * circumference;
+            
+            let message = "";
+            if (percentage >= 90) {
+                message = "Excellent! You have mastered workplace safety!";
+            } else if (percentage >= 70) {
+                message = "Good job! You have a solid understanding.";
+            } else if (percentage >= 50) {
+                message = "Keep learning! Review the materials again.";
+            } else {
+                message = "Need more practice. Review the safety guidelines.";
+            }
+
+            quizContent.innerHTML = `
+                <div class="results-container">
+                    <h2 class="results-title">Quiz Complete!</h2>
+                    <p class="results-subtitle">${message}</p>
+                    
+                    <div class="score-display">
+                        <div class="score-circle">
+                            <div class="score-value">${percentage}%</div>
+                        </div>
+                        <div class="score-progress">
+                            <svg viewBox="0 0 180 180">
+                                <circle cx="90" cy="90" r="80" stroke="var(--surface-color-light)" />
+                                <circle cx="90" cy="90" r="80" stroke="url(#gradient)" 
+                                    stroke-dasharray="${circumference}" 
+                                    stroke-dashoffset="${offset}" />
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="var(--primary-color)" />
+                                        <stop offset="100%" stop-color="var(--accent-color)" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <p class="score-text">You scored <strong>${score}</strong> out of <strong>${quizData.questions.length}</strong></p>
+                    
+                    <div class="results-stats">
+                        <div class="result-stat">
+                            <div class="result-stat-value">${score}</div>
+                            <div class="result-stat-label">Correct</div>
+                        </div>
+                        <div class="result-stat">
+                            <div class="result-stat-value">${quizData.questions.length - score}</div>
+                            <div class="result-stat-label">Incorrect</div>
+                        </div>
+                        <div class="result-stat">
+                            <div class="result-stat-value">${quizData.questions.length}</div>
+                            <div class="result-stat-label">Total</div>
+                        </div>
+                    </div>
+                    
+                    <button class="restart-button" id="restartButton">
+                        <i data-lucide="refresh-cw"></i>
+                        Restart Quiz
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('restartButton').addEventListener('click', () => {
+                showStartScreen();
+            });
+            
+            lucide.createIcons();
+        }
+
+        // Navigation
+        prevButton.addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion(currentQuestion);
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentQuestion < quizData.questions.length - 1) {
+                currentQuestion++;
+                loadQuestion(currentQuestion);
+            } else {
+                showResults();
+            }
+        });
+
+        // Theme toggle
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const icon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('light-mode')) {
+                icon.setAttribute('data-lucide', 'moon');
+            } else {
+                icon.setAttribute('data-lucide', 'sun');
+            }
+            lucide.createIcons();
+        });
+
+        // Initialize
+        showStartScreen();
+    </script>
+</body>
+</html>
